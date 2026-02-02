@@ -1,4 +1,5 @@
 import "./Header.css";
+import { Link } from "react-router-dom";
 
 function Header({ storeName, cartCount }) {
   return (
@@ -7,38 +8,35 @@ function Header({ storeName, cartCount }) {
         <h1 className="header__logo">{storeName}</h1>
 
         <nav className="header__nav">
-          <a className="header__link" href="#">
+          <Link className="header__link" to="/">
             Home
-          </a>
-          <a className="header__link" href="#">
+          </Link>
+          <Link className="header__link" to="/products">
             Products
-          </a>
-          <a className="header__link" href="#">
+          </Link>
+
+          {/* Optional: keep these for styling, send them home for now */}
+          <Link className="header__link" to="/">
             About
-          </a>
-          <a className="header__link" href="#">
+          </Link>
+          <Link className="header__link" to="/">
             Contact
-          </a>
+          </Link>
         </nav>
 
-        {/* <button className="header__btn" type="button">
-          Sign In
-        </button> */}
-
         <div className="header__actions">
-            <div className="header__cart">
-                <span className="header__cart-icon">🛒</span>
+          <Link className="header__cart" to="/cart">
+            <span className="header__cart-icon">🛒</span>
 
             {cartCount > 0 && (
-                <span className="header__cart-count">{cartCount}</span>
+              <span className="header__cart-count">{cartCount}</span>
             )}
-            </div>
+          </Link>
 
-            <button className="header__btn" type="button">
-                Sign In
-            </button>
+          <button className="header__btn" type="button">
+            Sign In
+          </button>
         </div>
-        
       </div>
     </header>
   );

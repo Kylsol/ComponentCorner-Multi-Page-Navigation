@@ -1,14 +1,16 @@
 import "./App.css";
-import { useState } from "react";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import ProductCard from "./components/ProductCard";
-import Footer from "./components/Footer";
-import CartItem from "./components/CartItem";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
+import HomePage from "./pages/HomePage";
+import ProductsPage from "./pages/ProductsPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
+import CartPage from "./pages/CartPage";
 
 function App() {
-  
   const products = [
     {
       id: 1,
@@ -33,95 +35,55 @@ function App() {
     },
   ];
 
-  const [cart, setCart] = useState([]);
+  // ✅ Load cart from localStorage on first load
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem("cart");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // ✅ Save cart whenever it changes
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   function addToCart(product) {
     setCart((prevCart) => [...prevCart, product]);
   }
 
+  // Keep your current “remove by index” logic
   function removeFromCart(cartIndex) {
     setCart((prevCart) => prevCart.filter((_, i) => i !== cartIndex));
   }
 
-  const cartTotal = cart.reduce((sum, item) => sum + item.price, 0);
-
   return (
-    <div className="app">
-      <Header storeName="ComponentCorner" cartCount={cart.length} />
+    <BrowserRouter>
+      <div className="app">
+        <Header storeName="ComponentCorner" cartCount={cart.length} />
 
-      <Hero
-        title="Tech that just works."
-        subtitle="Shop a small collection of gadgets picked for students and everyday setups."
-        ctaText="Browse Products"
-        image="https://placehold.co/1200x400/111111/ffffff?text=ComponentCorner"
-      />
-
-      <main className="app__main">
-        <h2 className="app__section-title">Featured Products</h2>
-
-        <div className="app__grid">
-          {/* <ProductCard
-            name="Noise-Canceling Headphones"
-            price="129.99"
-            image="https://placehold.co/600x400"
-            description="Comfortable over-ear design with solid active noise cancellation."
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/products"
+            element={<ProductsPage products={products} addToCart={addToCart} />}
           />
-          <ProductCard
-            name="Mechanical Keyboard"
-            price="89.00"
-            image="https://placehold.co/600x400"
-            description="Tactile switches and a sturdy frame for long coding sessions."
+          <Route
+            path="/product/:id"
+            element={<ProductDetailsPage products={products} addToCart={addToCart} />}
           />
-          <ProductCard
-            name="USB-C Hub"
-            price="39.50"
-            image="https://placehold.co/600x400"
-            description="HDMI, USB, and SD card expansion for modern laptops."
-          /> */}
+          <Route
+            path="/cart"
+            element={<CartPage cart={cart} removeFromCart={removeFromCart} />}
+          />
+        </Routes>
 
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onAddToCart={addToCart}
-            />
-          ))}
-        </div>
-
-        <section className="cart">
-          <h2 className="app__section-title">Your Cart</h2>
-
-          {cart.length === 0 ? (
-            <p className="cart__empty">Your cart is empty. Add something!</p>
-          ) : (
-            <>
-              <div className="cart__items">
-                {cart.map((item, index) => (
-                  <CartItem
-                    key={`${item.id}-${index}`}
-                    item={item}
-                    onRemove={() => removeFromCart(index)}
-                  />
-                ))}
-              </div>
-
-              <div className="cart__total">
-                <span>Total:</span>
-                <strong>${cartTotal.toFixed(2)}</strong>
-              </div>
-            </>
-          )}
-        </section>
-
-      </main>
-
-      <Footer
-        storeName="ComponentCorner"
-        email="support@componentcorner.com"
-        phone="(555) 123-4567"
-        location="Eugene, OR"
-      />
-    </div>
+        <Footer
+          storeName="ComponentCorner"
+          email="support@componentcorner.com"
+          phone="(555) 123-4567"
+          location="Eugene, OR"
+        />
+      </div>
+    </BrowserRouter>
   );
 }
 
