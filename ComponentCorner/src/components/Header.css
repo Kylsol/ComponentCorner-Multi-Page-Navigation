@@ -1,0 +1,85 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(207, 159, 159, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #000000;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header__cart {
+  position: relative;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.header__cart-icon {
+  display: inline-block;
+}
+
+.header__cart-count {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #e11d48;
+  color: #fff;
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 18px;
+  text-align: center;
+}
+
+.header__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.header__logo {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.header__nav {
+  display: flex;
+  gap: 14px;
+}
+
+.header__link {
+  text-decoration: none;
+  color: #222;
+  font-weight: 600;
+}
+
+.header__link:hover {
+  text-decoration: underline;
+}
+
+.header__btn {
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.header__btn:hover {
+  opacity: 0.92;
+}
